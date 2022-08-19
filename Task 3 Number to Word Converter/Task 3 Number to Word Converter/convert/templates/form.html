@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style type="text/css">
+
+.validation-numerical {
+  transition: 0.3s all;
+}
+
+.valid {
+  color: black;
+}
+
+.invalid {
+  color: red;
+}
+
+.validation-error {
+  height: 0px;
+  overflow: hidden;
+  transition: 0.3s all;
+  opacity: 0;
+}
+
+
+.invalid > .validation-error {
+  opacity: 1;
+}
+
+label {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+
+  </style>
+
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color:rgb(219, 238, 172)">
+  <nav class="navbar navbar-expand-sm bg-light">
+    <ul class="navbar-nav">
+      
+    </ul>
+  </nav>
+  <br>
+
+<div class="container" style="margin-top: 100px;">
+  
+  <form action="result" method="POST" >
+    <label for="nmb">Input:</label>
+    <div class="form-group input-wrapper validate">
+      <input type="text" class="form-control validation-numerical" id="nmb" placeholder="Enter number" name="nmb" value="">
+      <span class="validation-error" id="message" for="degrees"></span>
+    </div>
+   
+    
+    <button type="submit" class="btn btn-primary" value="" onclick=" return validate()">Submit</button>
+    {%csrf_token%}
+  </form>
+  {% if error_message %}
+  <h2>Invalid request</h2>
+  {% endif %}
+</div>
+
+</body>
+</html>
+
+
+<script>
+
+$("input.validation-numerical").on('keyup', function() {
+  var num = $(this).val();
+
+
+  if(/^[a-zA-Z0-9- ]*$/.test(num) == false){
+  $(this).parent(".input-wrapper.validate").addClass("invalid").removeClass("valid");
+    document.getElementById("message").innerHTML="Special characters are not allowed";
+}
+
+  else if(isNaN(num)){
+    $(this).parent(".input-wrapper.validate").addClass("invalid").removeClass("valid");
+    document.getElementById("message").innerHTML="Please enter a valid number. Alphabets are not allowed";
+  }
+
+
+  else if (num<0){
+  $(this).parent(".input-wrapper.validate").addClass("invalid").removeClass("valid");
+    document.getElementById("message").innerHTML="Negative numbers are not allowed";
+}
+
+
+else{
+
+    $(this).parent(".input-wrapper.validate").addClass("valid").removeClass("invalid");
+    $(this).addClass("valid").removeClass("invalid")
+}
+})
+
+</script>
